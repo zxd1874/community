@@ -14,7 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
@@ -71,7 +73,7 @@ public class AuthorizeController {
 
     @GetMapping("/GiteeCallback")
     public String giteeCallback(@RequestParam(name = "code")String code,
-                                HttpServletRequest request){
+                                HttpServletResponse response){
         GiteeAccessTokenDTO giteeAccessTokenDTO = new GiteeAccessTokenDTO();
         giteeAccessTokenDTO.setClient_id(giteeClientId);
         giteeAccessTokenDTO.setClient_secret(giteeClientSecret);
@@ -83,14 +85,15 @@ public class AuthorizeController {
 
         if (giteeUser!=null){
             User user = new User();
-            user.setToken(UUID.randomUUID().toString());
+            String token = UUID.randomUUID().toString();
+            user.setToken(token);
             user.setName(giteeUser.getName());
             user.setAccount_id(String.valueOf(giteeUser.getId()));
             user.setGmt_create(System.currentTimeMillis());
             user.setGmt_modified(user.getGmt_create());
             userMapper.insert(user);
+            response.addCookie(new Cookie("token",token));
 
-            request.getSession().setAttribute("giteeUser",giteeUser);
             return "redirect:/";
         }else{
             return "redirect:/";
