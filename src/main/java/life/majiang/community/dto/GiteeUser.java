@@ -1,18 +1,10 @@
 package life.majiang.community.dto;
 
-public class GithubUser {
+public class GiteeUser {
 
-    private String name;
     private Long id;
+    private String name;
     private String bio;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Long getId() {
         return id;
@@ -20,6 +12,14 @@ public class GithubUser {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getBio() {
@@ -32,9 +32,9 @@ public class GithubUser {
 
     @Override
     public String toString() {
-        return "GithubUser{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
+        return "GiteeUser{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", bio='" + bio + '\'' +
                 '}';
     }
